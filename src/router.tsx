@@ -39,6 +39,6 @@ function normalizeBasename(baseUrl: string) {
 const basename = normalizeBasename(import.meta.env.BASE_URL);
 
 export const router = isGitHubPages()
-  ? createHashRouter(routes, { basename })
+  ? createHashRouter(routes)
   : createBrowserRouter(routes, { basename });
 
