@@ -1,12 +1,43 @@
-export type HabitFrequency = "daily" | "weekly" | "monthly" | "one-time";
+export enum HabitFrequency {
+  Daily = "daily",
+  Weekly = "weekly",
+  Monthly = "monthly",
+  OneTime = "one-time",
+}
 
-export type HabitCategory =
-  | "health"
-  | "fitness"
-  | "mind"
-  | "career"
-  | "social"
-  | "personal";
+export enum HabitCategory {
+  Health = "health",
+  Fitness = "fitness",
+  Mind = "mind",
+  Career = "career",
+  Social = "social",
+  PersonalCare = "personal-care",
+  Productivity = "productivity",
+  Finance = "finance",
+  Negative = "negative",
+}
+
+export enum HabitKind {
+  Positive = "positive",
+  Negative = "negative",
+}
+
+export enum HabitMetricType {
+  Checkbox = "checkbox",
+  Number = "number",
+}
+
+export type HabitTarget =
+  | {
+      type: HabitMetricType.Checkbox;
+    }
+  | {
+      type: HabitMetricType.Number;
+      target: number;
+      unit: string;
+      step?: number;
+      precision?: number;
+    };
 
 export interface Habit {
   id: string;
@@ -15,13 +46,14 @@ export interface Habit {
 
   category: HabitCategory;
   frequency: HabitFrequency;
-
-  target: number; // e.g., 1/day, 3/week, 4/month
-  unit: string;   // times, minutes, liters, steps
-
+  kind: HabitKind;
   points: number;
-
-  streak: boolean;
+  target: HabitTarget;
 
   active: boolean;
+  sortOrder: number;
+  createdAt: string; // ISO
+  archivedAt?: string; // ISO
 }
+
+export type HabitId = Habit["id"];
