@@ -1,4 +1,4 @@
-import { Navigate, createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter, createHashRouter } from "react-router-dom";
 
 import { MainLayout } from "@/layouts/MainLayout";
 import { DashboardPage } from "@/pages/Dashboard";
@@ -9,7 +9,7 @@ import { GoalsPage } from "@/pages/Goals";
 import { ReportsPage } from "@/pages/Reports";
 import { NotFoundPage } from "@/pages/NotFound";
 
-export const router = createBrowserRouter([
+const routes = [
   {
     path: "/",
     element: <MainLayout />,
@@ -24,5 +24,21 @@ export const router = createBrowserRouter([
       { path: "*", element: <NotFoundPage /> },
     ],
   },
-]);
+];
+
+function isGitHubPages() {
+  if (typeof window === "undefined") return false;
+  return window.location.hostname.endsWith("github.io");
+}
+
+function normalizeBasename(baseUrl: string) {
+  const trimmed = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
+  return trimmed.length === 0 ? "/" : trimmed;
+}
+
+const basename = normalizeBasename(import.meta.env.BASE_URL);
+
+export const router = isGitHubPages()
+  ? createHashRouter(routes, { basename })
+  : createBrowserRouter(routes, { basename });
 
